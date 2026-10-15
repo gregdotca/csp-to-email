@@ -1,0 +1,43 @@
+x-csp2e-env: &csp2e-env
+  CSP2E_SERVER: mail.example.com
+  CSP2E_PROTOCOL: starttls
+  CSP2E_PORT: "587"
+  CSP2E_USERNAME: user
+  CSP2E_PASSWORD: pass
+  CSP2E_SENDER: sender@example.com
+  CSP2E_RECEIVER: receiver@example.com
+  CSP2E_ALLOWED_HOSTS: "example.com,www.example.com"
+  CSP2E_PROXY_HOPS: "1"
+
+services:
+  web:
+    image: gregdotca/csp-to-email:latest
+    ports:
+      # Only reachable from this machine: put a reverse proxy in front.
+      - "127.0.0.1:5000:5000"
+    environment: *csp2e-env
+    volumes:
+      - csp-to-email-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/healthz', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  worker:
+    image: gregdotca/csp-to-email:latest
+    command: ["python", "worker.py"]
+    environment: *csp2e-env
+    volumes:
+      - csp-to-email-data:/data
+    restart: unless-stopped
+    stop_grace_period: 120s
+    healthcheck:
+      test: ["CMD", "python", "manage.py", "healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  csp-to-email-data:
