@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- Copyright notices in `LICENSE` and the README's license section now give the project's full span, 2025-2026, since it began as a proof of concept in 2025.
+
 ## 2026-10-14 (0.1.0)
 
 The first release. CSP to Email receives Content Security Policy violation reports, queues them in SQLite, and emails them as digests every few minutes. It's a rebuild of an earlier proof of concept, which has since become csprelay.com.

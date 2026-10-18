@@ -227,7 +227,7 @@ If digests stop arriving, `status` shows why. A wrong password or an unreachable
 
 MIT License
 
-Copyright (c) 2026 Greg Chetcuti <greg@chetcuti.com>
+Copyright (c) 2025-2026 Greg Chetcuti <greg@chetcuti.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
