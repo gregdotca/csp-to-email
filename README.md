@@ -179,6 +179,8 @@ The digest should arrive within `CSP2E_DIGEST_INTERVAL` (5 minutes by default). 
 
 The endpoint is public, so anyone can send it reports, including for pages that aren't yours. Set `CSP2E_ALLOWED_HOSTS` to the hostnames of the sites whose CSP points at it, such as `example.com,www.example.com`. Hostnames must match exactly, so list every variant your sites use. Reports for any other page are dropped before they're stored, and the digest says how many.
 
+The allowlist is checked against the page that broke the policy (the report's `document-uri`, or `documentURL` in the Reporting API), not against CSP to Email's own hostname. If CSP to Email runs at `csp.example.com` and receives reports for `example.com`, list `example.com`, not `csp.example.com`. Getting this wrong drops every real report as `host_not_allowed`.
+
 The rate limit (`CSP2E_RATE_LIMIT`, per client IP) and the queue limit (`CSP2E_MAX_QUEUED`) also cap how much any one sender, or a flood of them, can store.
 
 ## What's stored
@@ -203,7 +205,7 @@ CSP to Email itself never writes client IP addresses to disk: the rate limit kee
 | `CSP2E_SENDER` | (required) | The digest's From address. |
 | `CSP2E_RECEIVER` | (required) | Where digests go. Separate several addresses with commas. |
 | `CSP2E_DIGEST_INTERVAL` | `300` | Seconds to collect reports before sending a digest. |
-| `CSP2E_ALLOWED_HOSTS` | (accept all) | Comma-separated hostnames whose reports are accepted, such as `example.com,www.example.com`. Reports for other pages are dropped. |
+| `CSP2E_ALLOWED_HOSTS` | (accept all) | Comma-separated hostnames of the pages whose reports are accepted (the report's `document-uri`, not this service's hostname), such as `example.com,www.example.com`. Reports for other pages are dropped. |
 | `CSP2E_RATE_LIMIT` | `120` | Reports accepted per client IP per minute. |
 | `CSP2E_MAX_QUEUED` | `10000` | Most reports stored at once. Reports over the limit are dropped. |
 | `CSP2E_PROXY_HOPS` | `0` | Number of reverse proxies in front of the web service (see [Reverse proxy](#reverse-proxy)). |
