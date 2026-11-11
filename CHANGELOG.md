@@ -4,6 +4,7 @@
 
 ### Changed
 
+- The rating in `ACR.md` now links to its page on aicoderating.com.
 - Copyright notices in `LICENSE` and the README's license section now give the project's full span, 2025-2026, since it began as a proof of concept in 2025.
 - The README now says plainly that `CSP2E_ALLOWED_HOSTS` is matched against the page that broke the policy (the report's `document-uri`), not CSP to Email's own hostname, with an example, in "Keeping out junk reports" and the Settings table. A first deployment set it to the receiver's hostname, which would have dropped every real report as `host_not_allowed`.
 
